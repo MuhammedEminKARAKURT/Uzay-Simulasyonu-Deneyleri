@@ -1,3 +1,93 @@
-Space Simulation Laboratory: Multi-Planetary Physics EngineBu yazılım, Bursa Teknik Üniversitesi Uzay Simülasyonu Laboratuvarı için geliştirilmiş, kütleçekim kuvvetinin farklı gök cisimleri üzerindeki etkilerini simüle eden kapsamlı bir terminal uygulamasıdır. Yazılım, teorik fizik prensiplerini gerçek zamanlı kullanıcı girdileriyle birleştirerek 8 farklı gezegen için eş zamanlı sonuçlar üretir.🛠️ Teknik Mimari ve Kod YapısıKodun arkasındaki mühendislik tasarımı, sadece sonuç üretmeye değil, aynı zamanda bellek yönetimi ve kullanıcı deneyimi standartlarını karşılamaya odaklanmıştır:İşaretçi (Pointer) Odaklı Veri Erişimi: Gezegen isimleri ve yerçekimi ivmeleri gibi sabit veriler, doğrudan bellek adresleri üzerinden işaretçi aritmetiği (pointer arithmetic) ile işlenir. Bu, veri erişim hızını optimize eder ve bellek kullanımını minimize eder.Modüler Fonksiyonel Yapı: Her bir fiziksel deney (serbest düşme, basınç, enerji vb.), ana programdan bağımsız çalışan özel fonksiyonlara ayrılmıştır. Bu modülerlik, kodun genişletilebilirliğini ve bakım kolaylığını artırır.Dinamik Girdi Doğrulama (Input Validation): Kullanıcı tarafından girilen hatalı veri tipleri (örneğin sayı yerine harf girilmesi) scanf kontrol döngüleri ve rewind(stdin) kullanımı ile yakalanır. Programın çökmesi engellenerek süreklilik sağlanır.Hata Yönetimi ve Fiziksel Tutarlılık: Zaman, kütle ve uzunluk gibi fiziksel niceliklerin negatif girilmesi durumunda program mantıksal hataları önlemek için otomatik düzeltme (mutlak değer alma) mekanizmasını çalıştırır.🔬 Simülasyon KapsamıYazılım, temel fizikten ileri düzey mekanik hesaplamalara kadar geniş bir yelpazeyi kapsar. Genel olarak aşağıdaki alanlarda veri üretimi yapar:Kinematik Analizler: Düşey doğrultudaki hareketlerin farklı kütleçekim ortamlarındaki davranışı.Statik ve Dinamik Kuvvetler: Cisimlerin ağırlık değişimleri ve gerilme kuvvetleri.Enerji Dönüşümleri: Konum tabanlı potansiyel enerji hesaplamaları.Akışkanlar Mekaniği: Farklı $g$ ivmelerinde sıvıların uyguladığı basınç ve kaldırma kuvvetleri.Basit Harmonik Hareket: Yerçekimine bağlı sarkaç periyotlarının analizi.Eylemsiz Referans Sistemleri: Asansör içi gibi ivmeli sistemlerdeki etkin ağırlık değişimleri. Kurulum ve DerlemeUygulama standart C kütüphaneleri kullanılarak geliştirilmiştir ve herhangi bir modern C derleyicisi ile çalıştırılabilir.Derleme:Bashgcc main.c -o uzay_lab -lm
-Çalıştırma:Bash./uzay_lab
-👨‍🔬 Kullanım AkışıProgram etkileşimli bir terminal arayüzüne sahiptir:Kimlik Tanımlama: Kullanıcı başlangıçta bir "Bilim İnsanı" adı ile oturum açar.İnteraktif Menü: Deney listesinden seçim yapılır.Parametre Girişi: Deney için gerekli değişkenler (kütle, hız, süre vb.) girilir.Kıyaslamalı Analiz: Yazılım, girilen parametreleri tüm gezegen verileriyle işleyerek karşılaştırmalı bir tablo sunar.Geliştirici: [muhammed Soyadınız]Kurum: Bursa Teknik Üniversitesi
+# 🌌 Uzay Simülasyonu Laboratuvarı (C Programı)
+
+Bu proje, **Bursa Teknik Üniversitesi – Uzay Simülasyonu Laboratuvarı** kapsamında geliştirilen,
+farklı gezegenlerdeki fiziksel olayları **C dili** kullanarak simüle eden bir konsol uygulamasıdır.
+
+Program; gezegenlerin yerçekimi ivmelerini kullanarak çeşitli **klasik mekanik deneylerini**
+kullanıcıdan alınan parametrelere göre hesaplar ve sonuçları karşılaştırmalı olarak sunar.
+
+---
+
+## 🚀 Özellikler
+
+- 8 farklı gezegen için fiziksel hesaplamalar:
+  - Merkür
+  - Venüs
+  - Dünya
+  - Mars
+  - Jüpiter
+  - Satürn
+  - Uranüs
+  - Neptün
+- Menü tabanlı, kullanıcı dostu arayüz
+- Hatalı girişlere karşı dayanıklı veri doğrulama
+- Pointer kullanımı ile diziler üzerinde işlem
+- Fizik ve C programlama dersleri için uygundur
+
+---
+
+## 🧪 İçerdiği Deneyler
+
+| No | Deney Adı |
+|----|----------|
+| 1  | Serbest Düşme Deneyi |
+| 2  | Yukarı Atış Deneyi |
+| 3  | Ağırlık Deneyi |
+| 4  | Kütleçekimsel Potansiyel Enerji |
+| 5  | Hidrostatik Basınç |
+| 6  | Arşimet Kaldırma Kuvveti |
+| 7  | Basit Sarkaç Periyodu |
+| 8  | Sabit İp Gerilmesi |
+| 9  | Asansör Deneyi |
+
+---
+
+## 🧠 Kullanılan Fiziksel Formüller
+
+- **Serbest düşme:**  
+  \[
+  h = \frac{1}{2} g t^2
+  \]
+
+- **Maksimum yükseklik:**  
+  \[
+  h_{max} = \frac{v_0^2}{2g}
+  \]
+
+- **Ağırlık:**  
+  \[
+  G = m \cdot g
+  \]
+
+- **Potansiyel enerji:**  
+  \[
+  E_p = m \cdot g \cdot h
+  \]
+
+- **Hidrostatik basınç:**  
+  \[
+  P = \rho \cdot g \cdot h
+  \]
+
+- **Arşimet kaldırma kuvveti:**  
+  \[
+  F_k = \rho \cdot g \cdot V
+  \]
+
+- **Basit sarkaç periyodu:**  
+  \[
+  T = 2\pi \sqrt{\frac{L}{g}}
+  \]
+
+- **Asansör etkin ağırlığı:**  
+  \[
+  N = m(g \pm a)
+  \]
+
+---
+
+## ⚙️ Kurulum ve Çalıştırma
+
+### Derleme
+```bash
+gcc uzay_simulasyonu.c -o uzay_simulasyonu -lm
