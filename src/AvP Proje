@@ -1,0 +1,285 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+// Sabitler -
+#define PLANET_COUNT 8
+#define PI 3.14159265358979323846
+
+// 2.1. Serbest Düşme Deneyi
+void serbestDusme(const double *g_ptr, const char **p_names) {
+    double t;
+    printf("\n--- SERBEST DUSME DENEYI ---\n");
+
+    do {
+        printf("Sureyi (t) saniye cinsinden giriniz: ");
+    } while (scanf("%lf", &t) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+
+    t = (t < 0) ? -t : t; // Negatif girilirse mutlak değerini al
+
+    printf("\nSonuclar (t = %.2f s):\n", t);
+    printf("%-10s => %-15s\n", "Gezegen", "Yol (h) [m]");
+    printf("---------------------------\n");
+
+    for (int i = 0; i < PLANET_COUNT; i++) {
+        double g = *(g_ptr + i);
+        double h = 0.5 * g * t * t;
+        printf("%-10s => %.2f m\n", *(p_names + i), h);
+    }
+}
+
+// 2.2. Yukarı Atış Deneyi
+void yukariAtis(const double *g_ptr, const char **p_names) {
+    double v0;
+    printf("\n--- YUKARI ATIS DENEYI ---\n");
+
+    do {
+        printf("Firlatma hizini (v0) m/s cinsinden giriniz: ");
+    } while (scanf("%lf", &v0) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+
+    v0 = (v0 < 0) ? -v0 : v0;
+
+    printf("\nSonuclar (v0 = %.2f m/s):\n", v0);
+    printf("%-10s => %-15s\n", "Gezegen", "Maks. Yukseklik (h_max) [m]");
+    printf("----------------------------------------\n");
+
+    for (int i = 0; i < PLANET_COUNT; i++) {
+        double g = *(g_ptr + i);
+        double h_max = (v0 * v0) / (2 * g);
+        printf("%-10s => %.2f m\n", *(p_names + i), h_max);
+    }
+}
+
+// 2.3. Ağırlık Deneyi
+void agirlikDeneyi(const double *g_ptr, const char **p_names) {
+    double m;
+    printf("\n--- AGIRLIK DENEYI ---\n");
+
+    do {
+        printf("Cismin kutlesini (m) kg cinsinden giriniz: ");
+    } while (scanf("%lf", &m) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+
+    m = (m < 0) ? -m : m;
+
+    printf("\nSonuclar (m = %.2f kg):\n", m);
+    printf("%-10s => %-15s\n", "Gezegen", "Agirlik (G) [N]");
+    printf("---------------------------\n");
+
+    for (int i = 0; i < PLANET_COUNT; i++) {
+        double g = *(g_ptr + i);
+        double G = m * g;
+        printf("%-10s => %.2f N\n", *(p_names + i), G);
+    }
+}
+
+// 2.4. Kütleçekimsel Potansiyel Enerji Deneyi
+void potansiyelEnerji(const double *g_ptr, const char **p_names) {
+    double m, h;
+    printf("\n--- POTANSIYEL ENERJI DENEYI ---\n");
+
+    do {
+        printf("Cismin kutlesini (m) kg cinsinden giriniz: ");
+    } while (scanf("%lf", &m) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    m = (m < 0) ? -m : m;
+
+    do {
+        printf("Yuksekligi (h) metre cinsinden giriniz: ");
+    } while (scanf("%lf", &h) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    h = (h < 0) ? -h : h;
+
+    printf("\nSonuclar (m = %.2f kg, h = %.2f m):\n", m, h);
+    printf("%-10s => %-15s\n", "Gezegen", "Enerji (Ep) [J]");
+    printf("---------------------------\n");
+
+    for (int i = 0; i < PLANET_COUNT; i++) {
+        double g = *(g_ptr + i);
+        double Ep = m * g * h;
+        printf("%-10s => %.2f J\n", *(p_names + i), Ep);
+    }
+}
+
+// 2.5. Hidrostatik Basınç Deneyi
+void hidrostatikBasinc(const double *g_ptr, const char **p_names) {
+    double rho, h;
+    printf("\n--- HIDROSTATIK BASINC DENEYI ---\n");
+
+    do {
+        printf("Sivinin yogunlugunu (rho) kg/m^3 cinsinden giriniz: ");
+    } while (scanf("%lf", &rho) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    rho = (rho < 0) ? -rho : rho;
+
+    do {
+        printf("Derinligi (h) metre cinsinden giriniz: ");
+    } while (scanf("%lf", &h) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    h = (h < 0) ? -h : h;
+
+    printf("\nSonuclar (rho = %.2f kg/m^3, h = %.2f m):\n", rho, h);
+    printf("%-10s | %-15s\n", "Gezegen", "Basinc (P) [Pa]");
+    printf("---------------------------\n");
+
+    for (int i = 0; i < PLANET_COUNT; i++) {
+        double g = *(g_ptr + i);
+        double P = rho * g * h;
+        printf("%-10s => %.2f Pa\n", *(p_names + i), P);
+    }
+}
+
+// 2.6. Arşimet Kaldırma Kuvveti Deneyi
+void arsimetKaldirma(const double *g_ptr, const char **p_names) {
+    double rho, V;
+    printf("\n--- ARSIMET KALDIRMA KUVVETI DENEYI ---\n");
+
+    do {
+        printf("Sivinin yogunlugunu (rho) kg/m^3 cinsinden giriniz: ");
+    } while (scanf("%lf", &rho) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    rho = (rho < 0) ? -rho : rho;
+
+    do {
+        printf("Batan hacmi (V) m^3 cinsinden giriniz: ");
+    } while (scanf("%lf", &V) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    V = (V < 0) ? -V : V;
+
+    printf("\nSonuclar (rho = %.2f, V = %.4f):\n", rho, V);
+    printf("%-10s => %-15s\n", "Gezegen", "Kaldirma Kuv. (Fk) [N]");
+    printf("--------------------------------\n");
+
+    for (int i = 0; i < PLANET_COUNT; i++) {
+        double g = *(g_ptr + i);
+        double Fk = rho * g * V;
+        printf("%-10s => %.2f N\n", *(p_names + i), Fk);
+    }
+}
+
+// 2.7. Basit Sarkaç Periyodu Deneyi
+void basitSarkac(const double *g_ptr, const char **p_names) {
+    double L;
+    printf("\n--- BASIT SARKAC PERIYODU DENEYI ---\n");
+
+    do {
+        printf("Sarkac uzunlugunu (L) metre cinsinden giriniz: ");
+    } while (scanf("%lf", &L) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    L = (L <= 0) ? (L == 0 ? 1.0 : -L) : L; // 0 girilirse tanımsızlığı önlemek için 1.0 kabul edildi
+
+    printf("\nSonuclar (L = %.2f m):\n", L);
+    printf("%-10s => %-15s\n", "Gezegen", "Periyot (T) [s]");
+    printf("---------------------------\n");
+
+    for (int i = 0; i < PLANET_COUNT; i++) {
+        double g = *(g_ptr + i);
+        double T = 2 * PI * sqrt(L / g);
+        printf("%-10s => %.2f s\n", *(p_names + i), T);
+    }
+}
+
+// 2.8. Sabit İp Gerilmesi Deneyi
+void ipGerilmesi(const double *g_ptr, const char **p_names) {
+    double m;
+    printf("\n--- SABIT IP GERILMESI DENEYI ---\n");
+
+    do {
+        printf("Cismin kutlesini (m) kg cinsinden giriniz: ");
+    } while (scanf("%lf", &m) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    m = (m < 0) ? -m : m;
+
+    printf("\nSonuclar (m = %.2f kg):\n", m);
+    printf("%-10s => %-15s\n", "Gezegen", "Gerilme (T) [N]");
+    printf("---------------------------\n");
+
+    for (int i = 0; i < PLANET_COUNT; i++) {
+        double g = *(g_ptr + i);
+        double T = m * g;
+        printf("%-10s => %.2f N\n", *(p_names + i), T);
+    }
+}
+
+// 2.9. Asansör Deneyi
+void asansorDeneyi(const double *g_ptr, const char **p_names) {
+    double m, a;
+    int durum;
+
+    printf("\n--- ASANSOR DENEYI ---\n");
+    printf("1. Asansor yukari hizlaniyor VEYA asagi yavasliyor (N = m(g + a))\n");
+    printf("2. Asansor asagi hizlaniyor VEYA yukari yavasliyor (N = m(g - a))\n");
+
+    do {
+        printf("Durumu seciniz (1 veya 2): ");
+    } while (scanf("%d", &durum) != 1 || (durum != 1 && durum != 2) ? (printf("Hatali giris! Lutfen 1 veya 2 giriniz.\n"), rewind(stdin), 1) : 0);
+
+    do {
+        printf("Cismin kutlesini (m) kg cinsinden giriniz: ");
+    } while (scanf("%lf", &m) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    m = (m < 0) ? -m : m;
+
+    do {
+        printf("Asansor ivmesini (a) m/s^2 cinsinden giriniz: ");
+    } while (scanf("%lf", &a) != 1 ? (printf("Hatali giris! Lutfen bir sayi giriniz.\n"), rewind(stdin), 1) : 0);
+    a = (a < 0) ? -a : a;
+
+    printf("\nSonuclar (m = %.2f kg, a = %.2f m/s^2):\n", m, a);
+    printf("%-10s => %-15s\n", "Gezegen", "Etkin Agirlik (N) [N]");
+    printf("--------------------------------\n");
+
+    for (int i = 0; i < PLANET_COUNT; i++) {
+        double g = *(g_ptr + i);
+        double N = (durum == 1) ? (m * (g + a)) : (m * (g - a));
+        N = (N < 0) ? 0 : N;
+        printf("%-10s => %.2f N\n", *(p_names + i), N);
+    }
+}
+
+int main() {
+    double yerCekimi[PLANET_COUNT] = {3.7, 8.87, 9.81, 3.71, 24.79, 10.44, 8.69, 11.15};
+    const char *gezegenIsimleri[PLANET_COUNT] = {
+        "Merkur", "Venus", "Dunya", "Mars",
+        "Jupiter", "Saturn", "Uranus", "Neptun"
+    };
+
+    char bilimInsani[100];
+    int secim = 0;
+
+    printf("==========================================\n");
+    printf("      BURSA TEKNIK UNIVERSITESI\n");
+    printf("    UZAY SIMULASYONU LABORATUVARI\n");
+    printf("==========================================\n");
+    printf("Lutfen Bilim Insani Adini Giriniz: ");
+    fgets(bilimInsani, sizeof(bilimInsani), stdin);
+    bilimInsani[strcspn(bilimInsani, "\n")] = 0;
+
+    printf("\nHosgeldiniz, Sayin %s.\n", bilimInsani);
+
+    while (secim != -1) {
+        printf("\n------------ DENEY MENUSU ------------\n");
+        printf("1. Serbest Dusme Deneyi\n");
+        printf("2. Yukari Atis Deneyi\n");
+        printf("3. Agirlik Deneyi\n");
+        printf("4. Kutlecekimsel Potansiyel Enerji Deneyi\n");
+        printf("5. Hidrostatik Basinc Deneyi\n");
+        printf("6. Arsimet Kaldirma Kuvveti Deneyi\n");
+        printf("7. Basit Sarkac Periyodu Deneyi\n");
+        printf("8. Sabit Ip Gerilmesi Deneyi\n");
+        printf("9. Asansor Deneyi\n");
+        printf("------------------------------------------\n");
+
+        printf("Seciminizi Girin (Cikis icin -1): ");
+        // Menü doğrulaması: Harf girişi veya belirtilen aralık dışı kontrolü
+        while ((scanf("%d", &secim) != 1 || (secim < 1 && secim != -1) || secim > 9) ? (printf("Gecersiz secim! Lutfen 1-9 arasi bir deger veya -1 giriniz: "), rewind(stdin), 1) : 0);
+
+        switch (secim) {
+            case -1:
+                printf("Simulasyon sonlandiriliyor. Iyi gunler Sayin %s.\n", bilimInsani);
+                break;
+            case 1: serbestDusme(yerCekimi, gezegenIsimleri); break;
+            case 2: yukariAtis(yerCekimi, gezegenIsimleri); break;
+            case 3: agirlikDeneyi(yerCekimi, gezegenIsimleri); break;
+            case 4: potansiyelEnerji(yerCekimi, gezegenIsimleri); break;
+            case 5: hidrostatikBasinc(yerCekimi, gezegenIsimleri); break;
+            case 6: arsimetKaldirma(yerCekimi, gezegenIsimleri); break;
+            case 7: basitSarkac(yerCekimi, gezegenIsimleri); break;
+            case 8: ipGerilmesi(yerCekimi, gezegenIsimleri); break;
+            case 9: asansorDeneyi(yerCekimi, gezegenIsimleri); break;
+        }
+    }
+
+    return 0;
+}
